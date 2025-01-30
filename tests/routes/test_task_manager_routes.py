@@ -119,7 +119,7 @@ class TestFetchAllTasksRoute:
         client: TestClient
     ) -> None:
         # Arrange
-        response = client.get(f"/tasks/?completed=NOT_BOOLEAN")
+        response = client.get("/tasks/?completed=NOT_BOOLEAN")
 
         # Act
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY

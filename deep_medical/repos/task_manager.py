@@ -51,7 +51,11 @@ class TaskManagerRepo:
             return TaskManagerSchema.from_entity(entity)
 
     @classmethod
-    async def update_task_by_id(cls, id: UUID, task: NewTaskManagerSchema) -> Optional[UUID]:
+    async def update_task_by_id(
+        cls,
+        id: UUID,
+        task: NewTaskManagerSchema
+    ) -> Optional[UUID]:
         async with db_session() as session:
             query = (
                 update(cls.model)
@@ -66,7 +70,11 @@ class TaskManagerRepo:
             return result.scalar()
 
     @classmethod
-    async def patch_task_by_id(cls, id: UUID, task: TaskManagerPatchSchema) -> Optional[UUID]:
+    async def patch_task_by_id(
+        cls,
+        id: UUID,
+        task: TaskManagerPatchSchema
+    ) -> Optional[UUID]:
         async with db_session() as session:
             query = (
                 update(cls.model)
@@ -78,7 +86,7 @@ class TaskManagerRepo:
             )
             try:
                 result = await session.execute(query)
-            except IntegrityError as e:
+            except IntegrityError:
                 raise exc.InvalidDataException("Title cannot be Null")
             await session.commit()
             return result.scalar()

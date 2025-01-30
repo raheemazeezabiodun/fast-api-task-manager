@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Dict, Optional
+from typing import AsyncGenerator, Dict
 
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,

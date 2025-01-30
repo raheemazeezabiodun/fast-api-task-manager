@@ -126,7 +126,10 @@ class TestTaskManagerRepo:
         assert updated_task.title == task.title
         assert updated_task.description == payload.description
 
-    async def test_patch_task_by_id_raises_exception(self, get_new_task: NewTaskResult) -> None:
+    async def test_patch_task_by_id_raises_exception(
+        self,
+        get_new_task: NewTaskResult
+    ) -> None:
         # Arrange
         task = await TaskManagerRepo.save(get_new_task())
         payload = TaskManagerPatchSchema(title=None)

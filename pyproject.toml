@@ -29,6 +29,14 @@ build-backend = "poetry.core.masonry.api"
 pytest-postgresql = "^6.1.1"
 pytest = "^8.3.4"
 pytest-asyncio = "^0.25.3"
+ruff = "^0.9.4"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+
+
+[tool.ruff]
+line-length = 92
+
+[tool.ruff.lint]
+extend-select = ["E501"]

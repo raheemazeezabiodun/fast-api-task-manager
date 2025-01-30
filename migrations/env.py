@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel import SQLModel
 from alembic import context
 
-from deep_medical.models.task_manager import TaskManager
+from deep_medical.models.task_manager import TaskManager    # noqa
 from deep_medical import settings
 
 # this is the Alembic Config object, which provides

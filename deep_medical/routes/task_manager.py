@@ -26,8 +26,12 @@ async def create_tasks(task: NewTaskManagerSchema) -> TaskManagerSchema:
 
 
 @task_router.get('/tasks', status_code=status.HTTP_200_OK)
-async def get_tasks(completed: Optional[bool] = None) -> list[TaskManagerSchema]:
-    """Gets all tasks. Filter available by fetching all tasks based on the completed status"""
+async def get_tasks(
+    completed: Optional[bool] = None
+) -> list[TaskManagerSchema]:
+    """Gets all tasks.
+    Filter available by fetching all tasks based on the completed status
+    """
     results = await get_all_tasks(completed=completed)
     return results
 

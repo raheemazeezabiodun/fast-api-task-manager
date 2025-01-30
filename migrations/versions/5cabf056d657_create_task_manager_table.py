@@ -32,7 +32,9 @@ def upgrade() -> None:
     sa.Column('completed', sa.Boolean(), nullable=False, default=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index('idx_task_manager_completed', 'task_manager', ['completed'], unique=False)
+    op.create_index(
+        'idx_task_manager_completed', 'task_manager', ['completed'], unique=False
+    )
     # ### end Alembic commands ###
 
 

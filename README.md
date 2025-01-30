@@ -40,7 +40,8 @@ You can access the OpenAPI docs at http://127.0.0.1:8000/redoc
 
 ### Running the tests
 ```shell
-poetry run pytest tests/ -vv
+poetry run ruff check    # for linting
+poetry run pytest tests/ -vv    # for tests
 ```
 
 
