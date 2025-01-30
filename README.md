@@ -7,7 +7,7 @@ $ git clone https://github.com/raheemazeezabiodun/fast-api-task-manager.git
 $ cd fast-api-task-manager
 ```
 
-2. Install dependencies: (Feel free to use any either virtualenv or pyenv)
+2. Install dependencies: (Feel free to use either virtualenv or pyenv)
 ```shell
  poetry install
 ```

@@ -25,7 +25,7 @@ class NewTaskManagerSchema(BaseModel):
     completed: Optional[bool] = False
 
 
-class TaskManagerUpdateSchema(BaseModel):
+class TaskManagerPatchSchema(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     completed: Optional[bool] = None

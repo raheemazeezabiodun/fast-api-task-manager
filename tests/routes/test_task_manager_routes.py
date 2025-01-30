@@ -221,3 +221,50 @@ class TestDeleteTask:
 
         # Assert
         assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+class TestPatchTask:
+    async def test_patch_task_ok(
+        self,
+        client: TestClient,
+        get_new_task: NewTaskResult
+    ) -> None:
+        # Arrange
+        task = await TaskManagerRepo.save(get_new_task())
+
+        # Act
+        response = client.patch(f"/tasks/{task.id}", json={'completed': True})
+
+        # Assert
+        updated_task = await TaskManagerRepo.get_task_from_id(task.id)
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert updated_task.title == task.title
+        assert updated_task.completed
+
+    async def test_should_raise_exception_if_id_not_found(
+        self,
+        client: TestClient,
+        get_new_task: NewTaskResult
+    ) -> None:
+        # Arrange
+        payload = get_new_task(title="Updated title")
+
+        # Act
+        response = client.patch(f"/tasks/{uuid.uuid4()}", json=payload.model_dump())
+
+        # Assert
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    async def test_should_raise_exception_if_invalid_payload(
+        self,
+        client: TestClient,
+        get_new_task: NewTaskResult
+    ) -> None:
+        # Arrange
+        task = await TaskManagerRepo.save(get_new_task())
+
+        # Act
+        response = client.patch(f"/tasks/{task.id}", json={'title': None})
+
+        # Assert
+        assert response.status_code == status.HTTP_400_BAD_REQUEST

@@ -2,7 +2,11 @@ from fastapi import FastAPI, status, Request
 from fastapi.responses import JSONResponse
 
 from deep_medical.routes.task_manager import task_router
-from deep_medical.exceptions import AppException, NotFoundException
+from deep_medical.exceptions import (
+    AppException,
+    InvalidDataException,
+    NotFoundException
+)
 
 app = FastAPI(
     title="Task Manager API",
@@ -16,6 +20,8 @@ app.include_router(task_router)
 async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
     if isinstance(exc, NotFoundException):
         status_code = status.HTTP_404_NOT_FOUND
+    elif isinstance(exc, InvalidDataException):
+        status_code = status.HTTP_400_BAD_REQUEST
     else:
         status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 

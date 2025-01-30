@@ -4,3 +4,7 @@ class AppException(Exception):
 
 class NotFoundException(AppException):
     pass
+
+
+class InvalidDataException(AppException):
+    pass

@@ -4,12 +4,15 @@ from typing import Sequence
 from uuid import UUID
 
 from sqlalchemy import select, delete, update
+from sqlalchemy.exc import IntegrityError
 
 from deep_medical.models.task_manager import TaskManager
 from deep_medical.database import db_session
+from deep_medical import exceptions as exc
 from deep_medical.schemas.task_manager import (
     NewTaskManagerSchema,
-    TaskManagerSchema
+    TaskManagerSchema,
+    TaskManagerPatchSchema
 )
 
 
@@ -59,6 +62,24 @@ class TaskManagerRepo:
                 .returning(cls.model.id)
             )
             result = await session.execute(query)
+            await session.commit()
+            return result.scalar()
+
+    @classmethod
+    async def patch_task_by_id(cls, id: UUID, task: TaskManagerPatchSchema) -> Optional[UUID]:
+        async with db_session() as session:
+            query = (
+                update(cls.model)
+                .where(cls.model.id == id)
+                .values(
+                    **task.model_dump(exclude_unset=True)
+                )
+                .returning(cls.model.id)
+            )
+            try:
+                result = await session.execute(query)
+            except IntegrityError as e:
+                raise exc.InvalidDataException("Title cannot be Null")
             await session.commit()
             return result.scalar()
 

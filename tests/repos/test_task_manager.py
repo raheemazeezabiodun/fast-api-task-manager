@@ -4,6 +4,8 @@ import pytest
 
 from deep_medical.repos.task_manager import TaskManagerRepo
 from tests.conftest import NewTaskResult
+from deep_medical.schemas.task_manager import TaskManagerPatchSchema
+from deep_medical import exceptions as exc
 
 
 class TestTaskManagerRepo:
@@ -100,3 +102,35 @@ class TestTaskManagerRepo:
 
         # Assert
         assert not result
+
+    async def test_patch_task_by_id_not_exists(self, get_new_task: NewTaskResult) -> None:
+        # Act
+        result = await TaskManagerRepo.patch_task_by_id(uuid.uuid4(), get_new_task())
+
+        # Assert
+        assert not result
+
+    async def test_patch_task_by_id(self, get_new_task: NewTaskResult) -> None:
+        # Arrange
+        task = await TaskManagerRepo.save(get_new_task())
+        payload = TaskManagerPatchSchema(description="patched description")
+
+        # Act
+        updated_task_id = await TaskManagerRepo.patch_task_by_id(task.id, payload)
+
+        # Assert
+        updated_task = await TaskManagerRepo.get_task_from_id(task.id)
+        assert updated_task_id == task.id
+
+        # title remains as it is
+        assert updated_task.title == task.title
+        assert updated_task.description == payload.description
+
+    async def test_patch_task_by_id_raises_exception(self, get_new_task: NewTaskResult) -> None:
+        # Arrange
+        task = await TaskManagerRepo.save(get_new_task())
+        payload = TaskManagerPatchSchema(title=None)
+
+        # Act / Assert
+        with pytest.raises(exc.InvalidDataException):
+            await TaskManagerRepo.patch_task_by_id(task.id, payload)

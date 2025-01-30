@@ -3,7 +3,8 @@ from typing import Optional
 
 from deep_medical.schemas.task_manager import (
     NewTaskManagerSchema,
-    TaskManagerSchema
+    TaskManagerSchema,
+    TaskManagerPatchSchema
 )
 from deep_medical.repos.task_manager import TaskManagerRepo
 from deep_medical import exceptions as exc
@@ -37,4 +38,11 @@ async def update_task_by_id(id: UUID, task: NewTaskManagerSchema) -> None:
     task_id = await TaskManagerRepo.update_task_by_id(id, task)
     if not task_id:
         raise exc.NotFoundException(f"Task not found for id={id}, cannot update")
+    return None
+
+
+async def patch_task_by_id(id: UUID, task: TaskManagerPatchSchema) -> None:
+    task_id = await TaskManagerRepo.patch_task_by_id(id, task)
+    if not task_id:
+        raise exc.NotFoundException(f"Task not found for id={id}, cannot patch")
     return None
