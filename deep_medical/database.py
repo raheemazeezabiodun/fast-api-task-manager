@@ -16,7 +16,7 @@ _db_engines: Dict[str, AsyncEngine] = {}
 
 
 def get_or_create_engine() -> AsyncEngine:
-    key = url or settings.DATABASE_URL
+    key = settings.DATABASE_URL
     if key not in _db_engines:
         options = {
             "echo": True,
