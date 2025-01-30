@@ -1,6 +1,7 @@
 from fastapi import FastAPI, status, Request
 from fastapi.responses import JSONResponse
 
+from deep_medical.routes.task_manager import task_router
 from deep_medical.exceptions import AppException, NotFoundException
 
 app = FastAPI(
@@ -9,6 +10,7 @@ app = FastAPI(
     summary="The APIs to serve the task manager based on the deep medical specification"
 )
 
+app.include_router(task_router)
 
 @app.exception_handler(AppException)
 async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
